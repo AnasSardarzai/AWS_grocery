@@ -1,7 +1,7 @@
 # GroceryMate 🛒
 
 **GroceryMate** is a modern, full-featured e-commerce platform for seamless online grocery shopping.  
-Built with Python and PostgreSQL, and deployed on AWS using EC2, Lambda, S3, RDS, and DynamoDB.
+Built with Python and PostgreSQL, deployed on AWS using EC2, RDS, S3, and Terraform for infrastructure management.
 
 ---
 
@@ -12,9 +12,11 @@ Built with Python and PostgreSQL, and deployed on AWS using EC2, Lambda, S3, RDS
 4. [Prerequisites](#prerequisites)
 5. [Installation](#installation)
 6. [Usage](#usage)
-7. [AWS Services](#aws-services)
-8. [Contributing](#contributing)
-9. [License](#license)
+7. [AWS Infrastructure](#aws-infrastructure)
+8. [Terraform Deployment](#terraform-deployment)
+9. [Environment Variables](#environment-variables)
+10. [Contributing](#contributing)
+11. [License](#license)
 
 ---
 
@@ -46,7 +48,7 @@ This project demonstrates full-stack development with Python and PostgreSQL, int
 Before running the application, ensure the following dependencies are installed:
 - Python >= 3.11
 - PostgreSQL (Database for storing products and users)
-- Git (Version control system)
+- Git
 
 ---
 
@@ -65,21 +67,9 @@ psql -U postgres -c "CREATE USER grocery_user WITH ENCRYPTED PASSWORD '<your_sec
 psql -U postgres -c "ALTER USER grocery_user WITH SUPERUSER;"
 psql -U grocery_user -d grocerymate_db -f backend/app/sqlite_dump_clean.sql
 
-# Create .env file and set environment variables
-touch .env  # macOS/Linux
-# or
-ni .env -Force  # Windows
-
-# Add the following to .env (replace placeholders)
-JWT_SECRET_KEY=<your_generated_key>
-POSTGRES_USER=grocery_user
-POSTGRES_PASSWORD=<your_password>
-POSTGRES_DB=grocerymate_db
-POSTGRES_HOST=localhost
-POSTGRES_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}
-
-# Start the application
-python3 run.py
+# Create .env file (do not commit it!)
+cp .env.example .env
+# Fill in your JWT_SECRET_KEY and PostgreSQL credentials
 Usage
 Open http://localhost:5000
 
@@ -89,17 +79,54 @@ Browse and search for products
 
 Add items to your basket and proceed through checkout
 
-AWS Services
-EC2: Hosts the backend server.
+AWS Infrastructure
+This project uses AWS resources for hosting, storage, and database management:
 
-S3: Stores product images and static assets.
+EC2: Hosts the backend server
 
-RDS: Manages the PostgreSQL database.
+RDS (MySQL): Stores user and product data
 
-Lambda: Runs serverless backend functions.
+S3: Stores user avatars and static assets
 
-DynamoDB: Optional key-value storage for session or analytics data.
+Security Group: Allows HTTP (80) and SSH (22) access for development/testing
 
+Terraform: Used to provision all AWS resources
+
+Terraform Outputs:
+
+ec2_public_ip → Access the backend server
+
+rds_endpoint → Database connection endpoint
+
+Terraform Deployment
+Ensure AWS CLI is configured with your credentials
+
+Go to the infrastructure/ folder
+
+Run:
+
+bash
+Code kopieren
+terraform init
+terraform plan
+terraform apply
+Use the outputs to update your .env file for database connection
+
+Environment Variables
+Important: Never commit your .env file with secrets to GitHub
+
+Use .env.example as a template
+
+Required variables:
+
+text
+Code kopieren
+JWT_SECRET_KEY=<your_generated_key>
+POSTGRES_USER=grocery_user
+POSTGRES_PASSWORD=<your_password>
+POSTGRES_DB=grocerymate_db
+POSTGRES_HOST=localhost
+POSTGRES_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}
 Contributing
 We welcome contributions!
 
@@ -110,4 +137,3 @@ Create a new feature branch: feature/your-feature
 Implement your changes and commit
 
 Push your branch and create a Pull Request
-
