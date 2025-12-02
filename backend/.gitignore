@@ -1,3 +1,7 @@
+# ----------------------------
+# Python / Backend
+# ----------------------------
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -30,8 +34,6 @@ instance/
 .webassets-cache
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
 
@@ -117,8 +119,24 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-#Migrations
+# Migrations
 migrations
 instance
 
 *.py~
+
+# ----------------------------
+# Terraform
+# ----------------------------
+.terraform/
+*.tfstate
+*.tfvars
+*.tfstate.backup
+*.tfplan
+crash.log
+
+# ----------------------------
+# Frontend / Node.js
+# ----------------------------
+frontend/node_modules/
+frontend/package-lock.json
