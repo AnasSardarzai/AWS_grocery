@@ -39,14 +39,15 @@ resource "aws_security_group" "web_sg" {
   name        = "aws-grocery-sg"
   description = "Security Group for AWS Grocery App"
 
-  # Ingress Rules
+  # SSH nur für deine IP (IPv6)
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    ipv6_cidr_blocks = ["2a04:4540:804:2b00:e4f5:4911:5f10:b6d6/128"]
   }
 
+  # HTTP für alle (IPv4)
   ingress {
     from_port   = 80
     to_port     = 80
@@ -54,12 +55,13 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Egress Rules
+  # Egress für alles
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   tags = {

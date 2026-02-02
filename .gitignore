@@ -6,3 +6,5 @@ venv/
 # Backup files
 *~
 *.swp
+
+.env
