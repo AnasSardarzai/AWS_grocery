@@ -84,7 +84,7 @@ This project uses AWS resources for hosting, storage, and database management:
 
 EC2: Hosts the backend server
 
-RDS (MySQL): Stores user and product data
+RDS (PostgreSQL): Stores user and product data
 
 S3: Stores user avatars and static assets
 

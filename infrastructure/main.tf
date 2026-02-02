@@ -97,15 +97,15 @@ resource "aws_db_subnet_group" "default" {
 }
 
 # ------------------------------
-# RDS MySQL Instance
+# RDS PostgreSQL Instance
 # ------------------------------
 resource "aws_db_instance" "grocery_db" {
   allocated_storage    = 20
-  engine               = "mysql"
-  engine_version       = "8.0"
+  engine               = "postgres"
+  engine_version       = "15.3" # aktuelle stabile Version
   instance_class       = "db.t3.micro"
-  db_name              = "grocerydb"
-  username             = "admin"
+  db_name              = "grocerymate_db"
+  username             = "grocery_user"
   password             = var.db_password
   skip_final_snapshot  = true
   publicly_accessible  = false
