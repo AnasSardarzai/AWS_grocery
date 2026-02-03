@@ -8,15 +8,13 @@ Built with Python and PostgreSQL, deployed on AWS using EC2, RDS, S3, and Terraf
 ## Table of Contents
 1. [Overview](#overview)
 2. [Features](#features)
-3. [Screenshots & Demo](#screenshots--demo)
-4. [Prerequisites](#prerequisites)
-5. [Installation](#installation)
-6. [Usage](#usage)
-7. [AWS Infrastructure](#aws-infrastructure)
-8. [Terraform Deployment](#terraform-deployment)
-9. [Environment Variables](#environment-variables)
-10. [Contributing](#contributing)
-11. [License](#license)
+3. [Prerequisites](#prerequisites)
+4. [Installation](#installation)
+5. [Usage](#usage)
+6. [AWS Infrastructure](#aws-infrastructure)
+7. [Terraform Deployment](#terraform-deployment)
+8. [Environment Variables](#environment-variables)
+9. [Contributing](#contributing)
 
 ---
 
@@ -27,113 +25,100 @@ This project demonstrates full-stack development with Python and PostgreSQL, int
 ---
 
 ## Features
-- 🛡️ **User Authentication & Protected Routes**: Secure registration, login, and session management.
-- 🔎 **Product Search & Filtering**: Browse products, apply filters, and sort by category or price.
-- ⭐ **Favorites Management**: Save and manage preferred products.
-- 🛍️ **Shopping Basket**: Add, view, modify, and remove items.
-- 💳 **Checkout Process**: Secure billing and shipping information handling with multiple payment options.
-
----
-
-## Screenshots & Demo
-![Homepage](path_to_homepage_image)  
-![Product Page](path_to_product_page_image)  
-[Demo Video](link_to_demo_video)
-
-*(Replace the placeholder paths with actual images or video links from your repo.)*
+- 🛡️ User authentication & protected routes
+- 🔎 Product search & filtering
+- ⭐ Favorites management
+- 🛍️ Shopping basket
+- 💳 Checkout process
 
 ---
 
 ## Prerequisites
-Before running the application, ensure the following dependencies are installed:
 - Python >= 3.11
-- PostgreSQL (Database for storing products and users)
+- PostgreSQL
 - Git
 
 ---
 
 ## Installation
+
+### Clone the repository
 ```bash
-# Clone the repository
 git clone --branch version2 https://github.com/AnasSardarzai/AWS_grocery.git
 cd AWS_grocery/backend
+```
 
-# Install Python dependencies
+### Install Python dependencies
+```bash
 pip install -r requirements.txt
+```
 
-# Configure PostgreSQL
+### Configure PostgreSQL (local)
+```bash
 psql -U postgres -c "CREATE DATABASE grocerymate_db;"
 psql -U postgres -c "CREATE USER grocery_user WITH ENCRYPTED PASSWORD '<your_secure_password>';"
 psql -U postgres -c "ALTER USER grocery_user WITH SUPERUSER;"
 psql -U grocery_user -d grocerymate_db -f backend/app/sqlite_dump_clean.sql
+```
 
-# Create .env file (do not commit it!)
+### Environment variables
+```bash
 cp .env.example .env
-# Fill in your JWT_SECRET_KEY and PostgreSQL credentials
-Usage
-Open http://localhost:5000
+```
 
-Register/Login to your account
+Fill in your PostgreSQL credentials and `JWT_SECRET_KEY`.
 
-Browse and search for products
+---
 
-Add items to your basket and proceed through checkout
+## Usage
+- Open: http://localhost:5000  
+- Register / Login  
+- Browse and search products  
+- Add items to basket and checkout  
 
-AWS Infrastructure
-This project uses AWS resources for hosting, storage, and database management:
+---
 
-EC2: Hosts the backend server
+## AWS Infrastructure
+This project uses the following AWS resources:
 
-RDS (PostgreSQL): Stores user and product data
+- **EC2** – Hosts the backend server
+- **RDS (PostgreSQL)** – Stores user and product data
+- **S3** – Stores user avatars and static assets
+- **Security Group** – Allows HTTP (80) and SSH (22)
+- **Terraform** – Provisions all infrastructure
 
-S3: Stores user avatars and static assets
+### Terraform Outputs
+- `ec2_public_ip` – Backend server access
+- `rds_endpoint` – Database connection endpoint
 
-Security Group: Allows HTTP (80) and SSH (22) access for development/testing
+---
 
-Terraform: Used to provision all AWS resources
-
-Terraform Outputs:
-
-ec2_public_ip → Access the backend server
-
-rds_endpoint → Database connection endpoint
-
-Terraform Deployment
-Ensure AWS CLI is configured with your credentials
-
-Go to the infrastructure/ folder
-
-Run:
-
-bash
-Code kopieren
+## Terraform Deployment
+```bash
+cd infrastructure
 terraform init
 terraform plan
 terraform apply
-Use the outputs to update your .env file for database connection
+```
 
-Environment Variables
-Important: Never commit your .env file with secrets to GitHub
+Use the Terraform outputs to update your `.env` file.
 
-Use .env.example as a template
+---
 
-Required variables:
-
-text
-Code kopieren
+## Environment Variables
+```env
 JWT_SECRET_KEY=<your_generated_key>
 POSTGRES_USER=grocery_user
 POSTGRES_PASSWORD=<your_password>
 POSTGRES_DB=grocerymate_db
 POSTGRES_HOST=localhost
 POSTGRES_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}
-Contributing
-We welcome contributions!
+```
 
-Fork the repository
+---
 
-Create a new feature branch: feature/your-feature
-
-Implement your changes and commit
-
-Push your branch and create a Pull Request
+## Contributing
+1. Fork the repository  
+2. Create a feature branch  
+3. Commit your changes  
+4. Open a Pull Request  
